@@ -1,56 +1,38 @@
-package ru.netology.test;
+DROP TABLE IF EXISTS users;
+CREATE TABLE users
+(
+    id       CHAR(36) PRIMARY KEY,
+    login    VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255)        NOT NULL,
+    status   VARCHAR(255)        NOT NULL DEFAULT 'active'
+);
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import ru.netology.data.DataHelper;
-import ru.netology.data.SqlHelper;
-import ru.netology.page.LoginPage;
+DROP TABLE IF EXISTS cards;
+CREATE TABLE cards
+(
+    id                 CHAR(36) PRIMARY KEY,
+    user_id            CHAR(36)           NOT NULL,
+    number             VARCHAR(19) UNIQUE NOT NULL,
+    balance_in_kopecks INT                NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
 
-import static com.codeborne.selenide.Selenide.open;
-import static ru.netology.data.SqlHelper.cleanAuthCode;
-import static ru.netology.data.SqlHelper.cleanDatabase;
+DROP TABLE IF EXISTS auth_codes;
+CREATE TABLE auth_codes
+(
+    id      CHAR(36) PRIMARY KEY,
+    user_id CHAR(36)   NOT NULL,
+    code    VARCHAR(6) NOT NULL,
+    created TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
 
-public class BankTest {
-    LoginPage loginPage;
-
-    @AfterEach
-void tableСlearingAuthCode() {
-        cleanAuthCode();
-}
-
-    @AfterAll
-    static void clearingAllTables() {
-        cleanDatabase();
-}
-
-    @BeforeEach
-    void setUp() {
-        loginPage = open("http://localhost:9999", LoginPage.class);
-}
-
-    @Test
-    void shouldSuccesFullLogin() {
-        var authInfo = DataHelper.getUser();
-        var verificatinPage = loginPage.validLogin(authInfo);
-        var verificationCode = SqlHelper.getVerifaicationCode();
-        verificatinPage.validCode(verificationCode);
-}
-
-    @Test
-    void invalidUser() {
-        var authInfo = DataHelper.getRandomUser();
-        loginPage.invalidUser(authInfo);
-        loginPage.error("Ошибка! Неверно указан логин или пароль");
-}
-
-    @Test
-    void invalidAuthCode() {
-        var authInfo = DataHelper.getUser();
-        var verificationPage = loginPage.validLogin(authInfo);
-        var verificatinCode = DataHelper.randomVerifai();
-        verificationPage.virify(verificatinCode.getCode());
-        verificationPage.errorMessage("Ошибка! Неверно указан код! Попробуйте ещё раз.");
-}
-}
+DROP TABLE IF EXISTS card_transactions;
+CREATE TABLE card_transactions
+(
+    id                CHAR(36) PRIMARY KEY,
+    source            VARCHAR(19) NOT NULL,
+    target            VARCHAR(19) NOT NULL,
+    amount_in_kopecks INT         NOT NULL,
+    created           TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
