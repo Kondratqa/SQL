@@ -53,5 +53,5 @@ public class BankTest {
         verificationPage.virify(verificatinCode.getCode());
         verificationPage.errorMessage("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
-    
+
 }
