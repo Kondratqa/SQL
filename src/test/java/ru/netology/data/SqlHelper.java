@@ -1,4 +1,3 @@
-
 package ru.netology.data;
 
 import lombok.SneakyThrows;

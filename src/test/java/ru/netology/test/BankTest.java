@@ -1,14 +1,11 @@
 package ru.netology.test;
-import ru.netology.data.DataHelper;
-
-import ru.netology.data.SqlHelper;
-
-import static com.codeborne.selenide.Selenide.$;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.netology.data.DataHelper;
+import ru.netology.data.SqlHelper;
 import ru.netology.page.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -56,4 +53,5 @@ public class BankTest {
         verificationPage.virify(verificatinCode.getCode());
         verificationPage.errorMessage("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
+    
 }
