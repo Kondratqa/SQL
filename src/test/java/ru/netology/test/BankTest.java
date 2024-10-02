@@ -45,7 +45,6 @@ public class BankTest {
         loginPage.error("Ошибка! Неверно указан логин или пароль");
     }
 
-
     @Test
     void invalidAuthCode() {
         var authInfo = DataHelper.getUser();
@@ -54,5 +53,4 @@ public class BankTest {
         verificationPage.virify(verificatinCode.getCode());
         verificationPage.errorMessage("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
-
 }
