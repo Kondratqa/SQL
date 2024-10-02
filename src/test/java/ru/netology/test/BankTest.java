@@ -45,6 +45,7 @@ public class BankTest {
         loginPage.error("Ошибка! Неверно указан логин или пароль");
     }
 
+
     @Test
     void invalidAuthCode() {
         var authInfo = DataHelper.getUser();
